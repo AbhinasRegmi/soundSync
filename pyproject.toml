@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=64.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "soundSync"
+version = "1.0.0"
+description = "Sync your pc sound with external devices."
+authors = [
+	{name= "Abhinas Regmi", email="contact@abhinasregmi.com.np"}
+]
+license = "MIT"
+requires-python = ">=3.7"
+dependencies = [
+
+]
