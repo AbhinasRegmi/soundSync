@@ -1,8 +1,8 @@
 # soundSync
 
-### Easily Sync your pc audio to external devices within same network.
+## Easily Sync your pc audio to external devices within same network.
 
-### Tasks
+## Tasks
 - [ ] Audio Capture
 - [ ] Audio Encoding
 - [ ] Network Streaming
