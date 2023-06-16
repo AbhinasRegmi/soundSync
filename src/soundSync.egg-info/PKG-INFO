@@ -1,0 +1,7 @@
+Metadata-Version: 2.1
+Name: soundSync
+Version: 1.0.0
+Summary: Sync your pc sound with external devices.
+Author-email: Abhinas Regmi <contact@abhinasregmi.com.np>
+Requires-Python: >=3.7
+License-File: LICENSE

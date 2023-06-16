@@ -1,0 +1,10 @@
+LICENSE
+README.md
+pyproject.toml
+src/soundSync/__init__.py
+src/soundSync/capture.py
+src/soundSync.egg-info/PKG-INFO
+src/soundSync.egg-info/SOURCES.txt
+src/soundSync.egg-info/dependency_links.txt
+src/soundSync.egg-info/requires.txt
+src/soundSync.egg-info/top_level.txt

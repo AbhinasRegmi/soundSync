@@ -9,8 +9,10 @@ description = "Sync your pc sound with external devices."
 authors = [
 	{name= "Abhinas Regmi", email="contact@abhinasregmi.com.np"}
 ]
-license = "MIT"
 requires-python = ">=3.7"
 dependencies = [
-
+	"sounddevice",
+	"soundfile",
+	"numpy",
+	"websockets",
 ]

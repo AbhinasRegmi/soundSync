@@ -1,0 +1,6 @@
+cffi==1.15.1
+pycparser==2.21
+sounddevice==0.4.6
+-e git+ssh://git@github.com/AbhinasRegmi/soundSync.git@bca8b7fdc8d7997a9bb9735e17aa79d519eea274#egg=soundSync
+style==1.1.0
+update==0.0.1
