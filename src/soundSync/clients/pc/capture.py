@@ -5,12 +5,13 @@ through that virtual speaker.
 from typing import Generator
 
 import numpy.typing as np
+from numpy import float64
 import soundfile as sf
 
 # since speaker doesn't work in wsl 
 # temporarily streaming a audio recording...
 
-def audio_stream(filepath: str) -> Generator[np.NDArray, None, None]:
+def audio_stream(filepath: str) -> Generator[np.NDArray[float64], None, None]:
     audio_window_size: int = 10
     sample_rate: int = sf.info(filepath).samplerate
 
