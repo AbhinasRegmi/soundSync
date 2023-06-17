@@ -6,6 +6,6 @@
 - [ ] Create Virtual Speaker
 - [ ] Audio Capture
 - [ ] Audio Encoding
-- [ ] Network Streaming
-- [ ] Web Server
+- [x] Network Streaming
+- [x] Web Server
 - [ ] Client Streaming
