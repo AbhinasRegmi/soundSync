@@ -19,7 +19,7 @@ def _generate_blocks(filepath: str, blocksize: int) -> Generator[bytes, None, No
 
 
 def audio_stream(filepath: str) -> Generator[bytes, None, None]:
-    audio_window_size: int = 10
+    audio_window_size: int = 9
     sample_rate: int = sf.info(filepath).samplerate
 
     audio_block_size: int = sample_rate * audio_window_size

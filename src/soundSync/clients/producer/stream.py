@@ -9,7 +9,6 @@ from soundSync.clients.producer.capture import audio_stream
 
 path = "/home/abhinas/Development/Python/soundSync/audio/mooskan.MP3"
 
-
 async def upload() -> None:
     """
     Consumes the audio_stream generattor and uploads to 
@@ -22,7 +21,7 @@ async def upload() -> None:
     
     async with connect(settings.WEB_SOCKET_FULL_URL) as ws:
         for chunk in stream:
-            encoded_payload = base64.b64encode(chunk)
+            encoded_payload = base64.b64encode(chunk).decode('utf-8')
             await ws.send(encoded_payload)
 
 

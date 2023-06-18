@@ -12,6 +12,7 @@ from http.server import SimpleHTTPRequestHandler, HTTPServer
 
 root_path = Path(__file__).resolve().parent
 
+
 class CustomRequestHandler(SimpleHTTPRequestHandler):
     def do_GET(self) -> None:
 

@@ -41,15 +41,14 @@
       let opened = false;
       let ws = new WebSocket("ws://localhost:8000")
 
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
+      let audioContext = null;
 
       sync.addEventListener('click', () => {
         if(!opened){
           opened = true;
 
-
-          let ws = new WebSocket("ws://localhost:8000");
+          audioContext = new AudioContext();
+          console.log("Started streaming...")
         }
       })
 
@@ -70,18 +69,26 @@
 
       decode_and_play = (encoded_payload) => {
 
-        const buffer= new Uint8Array(encoded_payload.length)
+        if(opened){
+          const decoded_data = atob(encoded_payload)
+          
+          const uint8Array = new Uint8Array(decoded_data.length);
+          for (let i = 0; i < decoded_data.length; i++) {
+                uint8Array[i] = decoded_data.charCodeAt(i);
+          }
 
-        for(let i = 0; i < buffer.length; i++ ){
-              buffer[i] = decoded_payload.charCodeAt(i);
+          audioContext.decodeAudioData(uint8Array.buffer, (audio_buffer) => {
+
+            const source = audioContext.createBufferSource();
+            source.buffer = audio_buffer
+            source.connect(audioContext.destination)
+            source.start()
+
+          }, (error) => {
+            console.log("Error in decoding data.")
+          })
         }
 
-        const blob = new Blob([buffer], {type: 'audio/mp3'})
-        const audio_URL = URL.createObjectURL(blob)
-
-        const audio_element = document.createElement('audio');
-        audio_element.src = audio_URL
-        audio_element.play()
       }
 
     </script>

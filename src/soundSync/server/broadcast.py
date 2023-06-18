@@ -9,6 +9,7 @@ from websockets.exceptions import ConnectionClosed
 
 CLIENTS = set()
 
+
 async def request_handler(ws):
     CLIENTS.add(ws)
 
@@ -24,6 +25,7 @@ async def request_handler(ws):
 
 async def run_server() -> None:
     async with serve(request_handler, settings.WEB_SOCKET_URL, settings.WEB_SOCKET_PORT):
+        print(f"Started server at {settings.WEB_SOCKET_FULL_URL}")
         await asyncio.Future() # this makes server run forever.
 
 
