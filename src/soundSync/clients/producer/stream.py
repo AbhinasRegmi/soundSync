@@ -1,7 +1,7 @@
 """
 Upload the audio stream to websocket for broadcasting.
 """
-
+import base64
 from websockets.client import connect
 
 from soundSync.config import settings
@@ -21,8 +21,9 @@ async def upload() -> None:
 
     
     async with connect(settings.WEB_SOCKET_FULL_URL) as ws:
-        for packet in stream:
-            await ws.send(packet)
+        for chunk in stream:
+            encoded_payload = base64.b64encode(chunk)
+            await ws.send(encoded_payload)
 
 
 
