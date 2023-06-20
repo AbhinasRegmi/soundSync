@@ -5,7 +5,7 @@
 #### Tasks
 - [ ] Create Virtual Speaker
 - [ ] Audio Capture
-- [ ] Audio Encoding
+- [x] Audio Encoding
 - [x] Network Streaming
 - [x] Web Server
-- [ ] Client Streaming
+- [x] Client Streaming
