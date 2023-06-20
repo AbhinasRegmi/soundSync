@@ -42,7 +42,7 @@
       let ws = new WebSocket("ws://localhost:8000")
 
       let audioContext = null;
-      let latestAudioBuffer = null;
+      let audioQueue = [];
 
       sync.addEventListener('click', () => {
         if(!opened){
@@ -64,26 +64,27 @@
       })
 
       ws.addEventListener('message', (event) => {
-        const base64data = event.data
-        decode_and_play(base64data)
+        const base64data = event.data;
+        addAudioBuffertoQueue(base64data);
       })
 
-      decode_and_play = (encoded_payload) => {
-
-        if(opened){
-          const decoded_data_buffer = base64toArrayBuffer(encoded_payload);
-          
-
-          audioContext.decodeAudioData(decoded_data_buffer, (audio_buffer) => {
+      play_from_queue = () => {
+          const current_data_buffer = audioQueue[0];
+  
+          audioContext.decodeAudioData(current_data_buffer, (audio_buffer) => {
             const source = audioContext.createBufferSource();
             source.buffer = audio_buffer;
             
-            const playbackRate = audioContext.sampleRate / audio_buffer.sampleRate;
-            source.playbackRate.value = playbackRate;
-
             source.connect(audioContext.destination);
-            source.start();
+            source.onended = () => {
+              audioQueue.shift();
 
+              if( audioQueue.length > 0 ){
+                play_from_queue()
+              }
+            }
+
+            source.start();
           },
           (error) => {
 
@@ -91,9 +92,21 @@
           }
           
           );
+      }
+
+      addAudioBuffertoQueue = (encoded_payload) => {
+
+        const audio_buffer = base64toArrayBuffer(encoded_payload);
+
+        if( opened ){
+          audioQueue.push(audio_buffer);
+
+          if( audioQueue.length === 1 ){
+            play_from_queue()
+          }
 
         }
-
+       
       }
 
 
