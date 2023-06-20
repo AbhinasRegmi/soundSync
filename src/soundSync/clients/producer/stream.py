@@ -25,7 +25,6 @@ async def upload() -> None:
             await ws.send(encoded_payload)
 
 
-
 if __name__ == "__main__":
     import asyncio
 

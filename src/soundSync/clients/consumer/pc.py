@@ -1,7 +1,7 @@
 """
 A pc client that listens to webserver
 """
-from functools import partial
+import base64
 from soundSync.config import settings
 
 from websockets.client import connect
@@ -15,11 +15,11 @@ async def listen() -> None:
                 while True:
                     data = await ws.recv()
 
-                    # validate the data is binary
-                    if not isinstance(data, bytes):
+                    binary_data = base64.b64decode(data)
+                    if not isinstance(binary_data, bytes):
                         raise ValueError("Data received must be bytes.")
 
-                    fp.write(data)
+                    fp.write(binary_data)
         except ConnectionClosed:
             print(f"Error: Server Disconnected ...")
 

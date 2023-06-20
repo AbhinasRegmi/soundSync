@@ -42,6 +42,7 @@
       let ws = new WebSocket("ws://localhost:8000")
 
       let audioContext = null;
+      let latestAudioBuffer = null;
 
       sync.addEventListener('click', () => {
         if(!opened){
@@ -70,25 +71,62 @@
       decode_and_play = (encoded_payload) => {
 
         if(opened){
-          const decoded_data = atob(encoded_payload)
+          const decoder =  new TextDecoder();
+          const decoded_data = decoder.decode(base64toArrayBuffer(encoded_payload));
           
-          const uint8Array = new Uint8Array(decoded_data.length);
-          for (let i = 0; i < decoded_data.length; i++) {
-                uint8Array[i] = decoded_data.charCodeAt(i);
-          }
 
-          audioContext.decodeAudioData(uint8Array.buffer, (audio_buffer) => {
-
+          audioContext.decodeAudioData(decoded_data, (audio_buffer) => {
             const source = audioContext.createBufferSource();
-            source.buffer = audio_buffer
-            source.connect(audioContext.destination)
-            source.start()
+            source.buffer = audio_buffer;
+            
+            const playbackRate = audioContext.sampleRate / audio_buffer.sampleRate;
+            source.playbackRate.value = playbackRate;
 
-          }, (error) => {
-            console.log("Error in decoding data.")
-          })
+            source.connect(audioContext.destination);
+            source.start();
+
+          },
+          (error) => {
+
+            console.log("Error in decoding data.");
+          }
+          
+          );
+        //   const uint8Array = new Uint8Array(decoded_data.length);
+        //   for (let i = 0; i < decoded_data.length; i++) {
+        //         uint8Array[i] = decoded_data.charCodeAt(i);
+        //   }
+
+        //   audioContext.decodeAudioData(uint8Array.buffer, (audio_buffer) => {
+
+        //     const source = audioContext.createBufferSource();
+        //     source.buffer = audio_buffer
+
+        //     const playbackRate = audioContext.sampleRate / audio_buffer.sampleRate;
+        //     source.playbackRate.value = playbackRate;
+
+        //     source.connect(audioContext.destination)
+        //     source.start()
+
+        //   }, (error) => {
+        //     console.log("Error in decoding data.")
+        //   })
+
         }
 
+      }
+
+
+      base64toArrayBuffer = (encoded_payload) => {
+
+          const binaryString = window.atob(encoded_payload);
+
+          const bytes = new Uint8Array(binaryString.length);
+          for (let i = 0; i < binaryString.length; i++) {
+              bytes[i] = binaryString.charCodeAt(i);
+          }
+
+          return bytes.buffer;
       }
 
     </script>
