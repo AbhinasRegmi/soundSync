@@ -27,7 +27,7 @@ async def send_message():
                     except KeyError:
                         pass
             else:
-                await asyncio.sleep(0.6)
+                await asyncio.sleep(1)
     except ConnectionClosed:
         pass
 
