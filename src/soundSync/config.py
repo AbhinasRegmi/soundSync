@@ -11,6 +11,9 @@ class Config:
     WEB_HTTP_URL: str = "localhost"
     WEB_HTTP_FULL_URL: str = f"localhost:5000"
 
+    RECORDING_SAMPLE_RATE: int = 4400
+    RECORDING_CHANNEL_NUMBERS: int = 2
+
 
 @lru_cache(maxsize=1)
 def setting() -> Config:

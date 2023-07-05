@@ -6,9 +6,27 @@ from typing import Generator
 from functools import partial
 
 import soundfile as sf
+import sounddevice as sd
 
-# since speaker doesn't work in wsl 
-# temporarily streaming a audio recording...
+from soundSync.config import settings
+
+def start_recording() -> None:
+    input_stream = sd.InputStream(
+        samplerate=settings.RECORDING_SAMPLE_RATE,
+        channels=settings.RECORDING_CHANNEL_NUMBERS
+    )
+
+    input_stream.start()
+
+    recording = sd.rec(
+        int(5 * settings.RECORDING_SAMPLE_RATE),
+        samplerate=settings.RECORDING_SAMPLE_RATE,
+        channels=settings.RECORDING_CHANNEL_NUMBERS,
+        blocking=True
+    )
+
+    input_stream.close()
+    
 
 def _generate_blocks(filepath: str, blocksize: int) -> Generator[bytes, None, None]:
     with open(filepath, "rb") as fp:
