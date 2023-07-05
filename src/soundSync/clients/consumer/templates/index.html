@@ -95,17 +95,17 @@
       }
 
       addAudioBuffertoQueue = (encoded_payload) => {
+        console.log('r')
+        // const audio_buffer = base64toArrayBuffer(encoded_payload);
 
-        const audio_buffer = base64toArrayBuffer(encoded_payload);
+        // if( opened ){
+        //   audioQueue.push(audio_buffer);
 
-        if( opened ){
-          audioQueue.push(audio_buffer);
+        //   if( audioQueue.length === 1 ){
+        //     play_from_queue()
+        //   }
 
-          if( audioQueue.length === 1 ){
-            play_from_queue()
-          }
-
-        }
+        // }
        
       }
 
