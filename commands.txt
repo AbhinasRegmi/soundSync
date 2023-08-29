@@ -1,0 +1,3 @@
+pactl load-module module-null-sink sink_name=soundSync
+28  //output
+pacmd update-sink-proplist soundSync device.description=soundSync_virtualSpeakers                                                                      pactl unload-module 28
