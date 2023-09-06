@@ -1,6 +1,6 @@
-pactl load-module module-null-sink sink_name=soundSync
-28  //output
-pacmd update-sink-proplist soundSync device.description=soundSync_virtualSpeakers                                                        
-pactl unload-module 28
-//if we need spaces in description
-pacmd update-sink-proplist MySink device.description='"My Sink"'
+pactl load-module module-null-sink sink_name=soundSync_vSpeaker sink_properties=device.description=soundSync_vSpeaker
+25
+pactl load-module module-remap-source master=soundSync_vSpeaker.monitor source_name=soundSync_vMic source_properties=device.description=soundSync_vMic
+26
+pactl unload-module 26
+pactl unload-module 25
