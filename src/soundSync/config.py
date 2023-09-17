@@ -14,7 +14,7 @@ class Config:
 
     RECORDING_SAMPLE_RATE: int = 44100
     RECORDING_CHANNEL_NUMBERS: int = 2
-    RECORDING_FRAMES_PER_BUFFER: int = 1024 * 5
+    RECORDING_CHUNK_SIZE: int = 1024
 
 
 @lru_cache(maxsize=1)
