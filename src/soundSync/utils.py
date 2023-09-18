@@ -1,6 +1,8 @@
 import struct
+import asyncio
 from typing import Generator
 from functools import lru_cache
+from contextlib import contextmanager
 
 import pyaudio
 
@@ -67,11 +69,12 @@ def initialize_recorder(
 def __gen_audio(
         n_channels: int = 2,
         sample_rate: int = 44100,
-        chunk_size: int = 1024) -> Generator[bytes, None, None]:
+        chunk_size: int = 16) -> Generator[bytes, None, None]:
     
     #TODO: choosing soundSync microphone
     stream = initialize_recorder(n_channels, sample_rate, chunk_size)
     
+    stream.start_stream()
 
     while True:
         yield stream.read(chunk_size)
@@ -81,16 +84,22 @@ gen_wav_audio = __gen_audio()
 
 
 def audio_streaming() -> Generator[bytes, None, None]:
-    yield(
-        get_wav_headers(
-            n_channels=settings.RECORDING_CHANNEL_NUMBERS,
-            sample_rate=settings.RECORDING_SAMPLE_RATE,
-            byte_size=2,
-            data_size=-1
+    try:
+        yield(
+            get_wav_headers(
+                n_channels=settings.RECORDING_CHANNEL_NUMBERS,
+                sample_rate=settings.RECORDING_SAMPLE_RATE,
+                byte_size=2,
+                data_size=-1
+            )
         )
-    )
-    
-    yield from __gen_audio(
-        n_channels=settings.RECORDING_CHANNEL_NUMBERS,
-        sample_rate=settings.RECORDING_SAMPLE_RATE
-    )
+        
+        yield from __gen_audio(
+            n_channels=settings.RECORDING_CHANNEL_NUMBERS,
+            sample_rate=settings.RECORDING_SAMPLE_RATE
+        )
+
+    finally:
+        # stream = initialize_recorder()
+        # stream.stop_stream()
+        pass

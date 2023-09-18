@@ -1,3 +1,6 @@
+# waring: do not run this file your self if your don't want
+#         to f*ck up your speakers...
+
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -9,7 +12,7 @@ from soundSync.utils import initialize_recorder, audio_streaming
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    initialize_recorder()
+    # initialize_recorder()
     yield
 
 app = FastAPI(
@@ -18,10 +21,15 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-
 @app.get("/")
+def home():
+    return {
+          "msg": "Welcome to SoundSync streaming.\n Visit /live for live streaming."
+    }
+
+@app.get("/live")
 def streaming_audio():
-    return StreamingResponse(
-        content=audio_streaming(),
-        media_type='audio/wav'
-    )
+        return StreamingResponse(
+            content=audio_streaming(),
+            media_type='audio/wav'
+        )
