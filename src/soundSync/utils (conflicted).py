@@ -11,9 +11,9 @@ from soundSync.config import settings
 class AudioStreamer:
     def __init__(
             self,
-            n_channels: int = 2,
-            sample_rate: int = 44100,
-            chunk_size: int = 16,
+            n_channels: int,
+            sample_rate: int,
+            chunk_size: int
     ) -> None:
         
         self._n_channels = n_channels
@@ -82,6 +82,7 @@ class AudioStreamer:
                 self._recorder_stream.read(self._chunk_size)
             )
 
+
     def start_recording(self) -> None:
         """
         Start the deamon thread to start publishing data.
@@ -98,4 +99,4 @@ class AudioStreamer:
         yield self._get_wav_header()
 
         while True:
-            yield self._buffer.get(block=True)  #block code until queue has item to server.
+            yield self._buffer.get(block=True)
