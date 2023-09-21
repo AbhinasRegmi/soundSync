@@ -1,26 +1,24 @@
-import queue
+import time
 import struct
 import threading
 from typing import Generator
+from collections import deque
 
 import pyaudio
-
-from soundSync.config import settings
-
 
 class AudioStreamer:
     def __init__(
             self,
-            n_channels: int = 2,
-            sample_rate: int = 44100,
-            chunk_size: int = 16,
+            n_channels: int,
+            sample_rate: int,
+            chunk_size: int
     ) -> None:
         
         self._n_channels = n_channels
         self._sample_rate = sample_rate
         self._chunk_size = chunk_size
         self._thread = threading.Thread(target=self._record_chunks, daemon=True)
-        self._buffer: queue.Queue[bytes] = queue.Queue(maxsize=1)
+        self._buffer: deque[bytes] = deque(maxlen=1)
         self._recorder_stream = self._initialize_recorder()
 
     def _initialize_recorder(self) -> pyaudio.Stream:
@@ -78,9 +76,7 @@ class AudioStreamer:
         self._recorder_stream.start_stream()
 
         while True:
-            self._buffer.put(
-                self._recorder_stream.read(self._chunk_size)
-            )
+            self._buffer.append(self._recorder_stream.read(self._chunk_size))
 
     def start_recording(self) -> None:
         """
@@ -92,10 +88,16 @@ class AudioStreamer:
     def stop_recording(self) -> None:
         self._recorder_stream.stop_stream()
         self._recorder_stream.close()
+
+    def get_audio(self) -> bytes:
+        return self._buffer.popleft()
     
     def gen_audio(self) -> Generator[bytes, None, None]:
 
         yield self._get_wav_header()
 
         while True:
-            yield self._buffer.get(block=True)  #block code until queue has item to server.
+            if len(self._buffer) > 0:
+                yield self._buffer.popleft()
+            else:
+                time.sleep(0.001)
